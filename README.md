@@ -1,0 +1,2 @@
+# Leveraging Machine Learning to Improve Robot Motion Planning in Unknown Environments
+Expanding on my ASSIP research in the Computer Systems Lab under Mr. Paul Kosek and Dr. Erion Plaku. This project is titled: Leveraging Machine Learning to Improve Robot Motion Planning in Unknown Environments. This project explores how ML techniques can improve high time-complexity areas when conducting motion planning in unknown environments.
