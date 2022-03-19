@@ -273,7 +273,7 @@ class CBS(object):
         startTime = time.time()
    
         while self.open_set:
-            if time.time() - startTime > 120:
+            if time.time() - startTime > 60:
                 print('Timed out')
                 break
       
@@ -328,7 +328,7 @@ def returnSolutionData(map, numAgents, costDict):
     cbs = CBS(env)
     solution = cbs.search()
     if not solution:
-        print(" Solution not found" )
+        print("Solution not found" )
         return
 
     return solution

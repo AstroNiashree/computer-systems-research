@@ -2,7 +2,7 @@ import os
 import yaml
 import time
 
-from planner.cbs import returnSolutionData
+from planner.cbs import CBS, returnSolutionData
 from visualize import Animation
 
 class CBSClass:
@@ -165,10 +165,13 @@ class CBSClass:
                 f.write(f"{obs[0]} {obs[1]} 0")
             for fc in allSensedFreeCells:
                 f.write(f"{fc[0]} {fc[1]} 1")
+            f.close()
             os.system('./CodeSensor/bin/Runner Distances data/scene.txt data/dists.txt')
             ###
             costDict = {}
             solution = returnSolutionData(map, len(goalPositions), costDict)
+            if not solution or time.time() - startTime > 60: # handles when there is no solution, or the planner times out
+                return 60.0, distance/len(currentPositions), replanningCnt
             for idx, agent in enumerate(solution):
                 # updating current positions of the robots
                 if currentPositions[idx][0] != solution[agent]['x']:
@@ -177,7 +180,8 @@ class CBSClass:
                     distance += 1
                 currentPositions[idx] = (solution[agent]['x'], solution[agent]['y'])
             t += 1
-        return time.time() - startTime, distance, replanningCnt
+        CBSClass.positionCache = []
+        return time.time() - startTime, distance/len(currentPositions), replanningCnt
     
     @staticmethod
     def animate(map, outputAgentPaths, saveOutput=False):
