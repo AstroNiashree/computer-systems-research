@@ -1,9 +1,11 @@
 import os
+from sys import displayhook
 import yaml
 import time
 
 from planner.cbs import CBS, returnSolutionData
 from visualize import Animation
+from map import Map
 
 class CBSClass:
     positionCache = []
@@ -160,13 +162,13 @@ class CBSClass:
             # costDict = run C++ code that creates this CostDict
             ### TODO: fix this temporary solution
             f = open('CodeSensor/data/scene.txt', 'w')
-            f.write(f"{map['map']['dimensions'][0]} {map['map']['dimensions'][1]}")
+            f.write(f"{map['map']['dimensions'][0]} {map['map']['dimensions'][1]}\n")
             for obs in allSensedObstacles:
-                f.write(f"{obs[0]} {obs[1]} 0")
+                f.write(f"{obs[0]} {obs[1]} 0\n")
             for fc in allSensedFreeCells:
-                f.write(f"{fc[0]} {fc[1]} 1")
+                f.write(f"{fc[0]} {fc[1]} 1\n")
             f.close()
-            os.system('./CodeSensor/bin/Runner Distances data/scene.txt data/dists.txt')
+            os.system('./CodeSensor/bin/Runner Distances CodeSensor/data/scene.txt CodeSensor/data/dists.txt')
             ###
             costDict = {}
             solution = returnSolutionData(map, len(goalPositions), costDict)
@@ -188,3 +190,9 @@ class CBSClass:
         
         animation = Animation(map, outputAgentPaths)
         animation.show()
+    
+    @staticmethod
+    def display(map):
+        
+        d = Map(map)
+        d.show()

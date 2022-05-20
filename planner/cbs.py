@@ -275,7 +275,7 @@ class CBS(object):
         while self.open_set:
             if time.time() - startTime > 60:
                 print('Timed out')
-                break
+                return {}
       
             P = min(self.open_set)
             self.open_set -= {P}

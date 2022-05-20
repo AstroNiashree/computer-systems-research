@@ -44,19 +44,19 @@ namespace Antipatrea
 	    in >> dims[0]  >> dims[1] ;
 	    m_grid.Setup2D(dims[0], dims[1], 0.0, 0.0, dims[0], dims[1]);
 	   	    
-	    Logger::m_out
-		<< "reading scene from <" << fname << ">" << std::endl
-		<< "...grid dims = " << dims[0] << " x " << dims[1] << std::endl;
+	    // Logger::m_out
+		// << "reading scene from <" << fname << ">" << std::endl
+		// << "...grid dims = " << dims[0] << " x " << dims[1] << std::endl;
 	    while(in >> coords[0] >> coords[1] >> val)
 		if(val == 0)
 		    m_cellsBlocked.insert(m_grid.GetCellIdFromCoords(coords));
 		else
 		    m_cellsFree.insert(m_grid.GetCellIdFromCoords(coords));
 		    
-	    Logger::m_out
-		<< "...number of blocked cells = " << m_cellsBlocked.size() << std::endl
-		<< "...number of free cells = " << m_cellsFree.size() << std::endl
-		<< "...number of unknown cells = " << (m_grid.GetNrCells() - m_cellsBlocked.size() - m_cellsFree.size()) << std::endl;
+	    // Logger::m_out
+		// << "...number of blocked cells = " << m_cellsBlocked.size() << std::endl;
+		// << "...number of free cells = " << m_cellsFree.size() << std::endl
+		// << "...number of unknown cells = " << (m_grid.GetNrCells() - m_cellsBlocked.size() - m_cellsFree.size()) << std::endl;
 	    
 
 		in.close();

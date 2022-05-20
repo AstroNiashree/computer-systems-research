@@ -1,4 +1,5 @@
 from ast import arg
+from cProfile import run
 from os import stat, times
 from time import time
 
@@ -8,6 +9,7 @@ from cbsclass import CBSClass
 
 import pandas as pd
 import statistics
+import numpy as np
 import matplotlib.pyplot as plt
 
 import random
@@ -86,15 +88,22 @@ else:
         # df = pd.read_csv(f'variability2agents{i}.csv')
         # std[str(i)] = df.iloc[:, 10:11].std()[0]
         # mean[str(i)] = df.iloc[:, 10:11].mean()[0]
-    f = open('variability_data/variability2_agents2.csv')
-    explorationTimes = []
     stds = []
-    for line in f.readlines()[1:]:
-        if line == '-----\n':
-            explorationTimes = sorted(explorationTimes)[5:-5]
-            stds.append(statistics.stdev(explorationTimes))
-            explorationTimes = []
-        else:
-            explorationTimes.append(float(line))
+
+    for i in range(1, 3):
+        f = open(f'variability_data/variability{i}_agents2.csv')
+        explorationTimes = []
+        stds.append([])
+        for line in f.readlines():
+            if line == '-----\n':
+                explorationTimes = np.array(explorationTimes)
+                q1, q3 = np.percentile(explorationTimes, [75 ,25])
+                explorationTimes = [t for t in explorationTimes if t >= q3 and t <= q1]
+                stds[i-1].append(statistics.stdev(explorationTimes))
+                explorationTimes = []
+            else:
+                runTime = float(line.split(',')[-1])
+                explorationTimes.append(runTime)
+
     plt.boxplot(stds)
     plt.show()
