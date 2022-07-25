@@ -11,15 +11,17 @@ import time
 import pickle
 
 from matplotlib.pyplot import step
+from xgboost import XGBRegressor
 
 class AStar():
-    def __init__(self, env, dimension, costDict):
+    def __init__(self, env, dimension, costDict, modelInformation):
         self.agent_dict = env.agent_dict
         self.admissible_heuristic = env.admissible_heuristic
         self.is_at_goal = env.is_at_goal
         self.get_neighbors = env.get_neighbors
         self.dimension = dimension
         self.costDict = self.readCostDict('dists.txt') #costDict
+        self.modelInformation = modelInformation
         
 
     def readCostDict(self, costDictFile):
@@ -86,8 +88,8 @@ class AStar():
                 else:
                     step_cost = int(self.costDict[f'{current.location.x} {current.location.y} {neighbor.location.x} {neighbor.location.y}'])                
                 tentative_g_score = g_score.setdefault(current, float("inf")) + int(step_cost)
-                # xgbModel = pickle.load(open('/models/xgb.pkl', "rb"))
-                print(xgbModel.predict([12,30,29,1,6,7,14,0,32.5,34]))
+                xgbModel = XGBRegressor()
+                xgbModel.load_model("planner/xgb.txt")
 
                 #print(f'open = {len(open_set)} closed = {len(closed_set)} edge = {current} -> {neighbor} cost  = {step_cost}')
                 if neighbor not in open_set:

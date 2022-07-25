@@ -171,7 +171,8 @@ class CBSClass:
             os.system('./CodeSensor/bin/Runner Distances CodeSensor/data/scene.txt CodeSensor/data/dists.txt')
             ###
             costDict = {}
-            solution = returnSolutionData(map, len(goalPositions), costDict)
+            modelInformation = 'xs1,ys1,xg1,yg1,xs2,ys2,xg2,yg2,distance,replanning count' # TODO
+            solution = returnSolutionData(map, len(goalPositions), costDict, modelInformation)
             if not solution or time.time() - startTime > 60: # handles when there is no solution, or the planner times out
                 return 60.0, distance/len(currentPositions), replanningCnt
             for idx, agent in enumerate(solution):

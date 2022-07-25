@@ -94,7 +94,7 @@ class Constraints(object):
             "EC: " + str([str(ec) for ec in self.edge_constraints])
 
 class Environment(object):
-    def __init__(self, dimension, agents, obstacles, costDict):
+    def __init__(self, dimension, agents, obstacles, costDict, modelInformation):
         self.dimension = dimension
         self.obstacles = obstacles
 
@@ -106,7 +106,7 @@ class Environment(object):
         self.constraints = Constraints()
         self.constraint_dict = {}
 
-        self.a_star = AStar(self, dimension, costDict)
+        self.a_star = AStar(self, dimension, costDict, modelInformation)
 
     def get_neighbors(self, state):
         neighbors = []
@@ -318,11 +318,11 @@ class CBS(object):
         return plan
 
 
-def returnSolutionData(map, numAgents, costDict):
+def returnSolutionData(map, numAgents, costDict, modelInformation):
     dimension = map['map']["dimensions"]
     obstacles = map['map']["obstacles"]
     agents = map['agents']
-    env = Environment(dimension, agents, obstacles, costDict)
+    env = Environment(dimension, agents, obstacles, costDict, modelInformation)
 
     # Searching
     cbs = CBS(env)
